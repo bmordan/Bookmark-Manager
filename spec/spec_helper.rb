@@ -1,12 +1,15 @@
 ENV["RACK_ENV"] = "test"
 
 require_relative '../server'
+require_relative '../lib/session_helpers'
 require 'database_cleaner'
 require 'capybara/rspec'
 
 Capybara.app = BookmarkManager.new
 
 RSpec.configure do |config|
+
+  include SessionHelper
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
