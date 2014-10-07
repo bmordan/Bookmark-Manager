@@ -1,11 +1,11 @@
 ENV["RACK_ENV"] = "test"
 
-require_relative '../server'
-require_relative '../lib/session_helpers'
+require_relative '../app/server'
+require_relative './features/session_helper'
 require 'database_cleaner'
 require 'capybara/rspec'
 
-Capybara.app = BookmarkManager.new
+Capybara.app = Sinatra::Application.new
 
 RSpec.configure do |config|
 

@@ -1,4 +1,3 @@
-require 'rubygems'
-require File.join(File.dirname(__FILE__), 'server.rb')
+require './app/server'
 
-run BookmarkManager
+run Sinatra::Application

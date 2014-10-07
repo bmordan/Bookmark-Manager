@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+  </head>
+   <body>
+
+    <header>
+      <%= partial :header %>
+      <%= partial :flash %>
+    </header>
+
+    <main>
+        <%= yield %>
+    </main>
+
+    <footer>
+      <%= partial :footer %>  
+    </footer>
+
+  </body>
+</html>

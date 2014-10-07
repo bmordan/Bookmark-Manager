@@ -4,7 +4,7 @@ feature "User adds a new link" do
 
   scenario "when browsing the homepage" do
     expect(Link.count).to eq(0)
-    visit '/'
+    visit '/links/new'
     add_link("http://www.makersacademy.com/", "Makers Academy")
     expect(Link.count).to eq(1)
     link = Link.first
@@ -13,7 +13,7 @@ feature "User adds a new link" do
   end
 
   scenario "with a few tags" do
-    visit "/"
+    visit "/links/new"
     add_link("http://www.makersacademy.com/","Makers Academy",["education", "ruby"])
     link = Link.first
     expect(link.tags.map(&:text)).to include("education")
@@ -21,11 +21,9 @@ feature "User adds a new link" do
   end
 
   def add_link(url, title, tags = [])
-    within('#new-link') do
-      fill_in 'url', :with => url
-      fill_in 'title', :with => title
-      fill_in 'tags', :with => tags.join(' ')
-      click_button 'Add link'
-    end
+    fill_in 'url', :with => url
+    fill_in 'title', :with => title
+    fill_in 'tags', :with => tags.join(' ')
+    click_button 'Add link'
   end
 end
