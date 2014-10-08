@@ -17,7 +17,13 @@ post '/users' do
 end
 
 get '/users/reset_password' do
-  @user
+  params[:token].nil? ? @reset = false : @reset = true
+  erb :"users/reset"
+end
+
+get '/users/reset_password/:token' do
+  params[:token].nil? ? @reset = false : @reset = true
+  @user = User.first(:password_digest => params[:token])
   erb :"users/reset"
 end
 

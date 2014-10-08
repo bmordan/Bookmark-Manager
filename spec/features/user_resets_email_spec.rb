@@ -8,7 +8,7 @@ feature "User resets their password" do
                 :password_confirmation => 'test')
   end
 
-  scenario "user can be identified" do
+  scenario "user can enter email and be identified" do
     visit '/users/reset_password'
     fill_in :email, :with => "test@test.com"
     click_on 'Reset'
@@ -17,12 +17,19 @@ feature "User resets their password" do
     }    
   end
 
-  scenario "user has a time period set for a password reset" do
+  scenario "user has a time period for a password reset" do
     visit '/users/reset_password'
     fill_in :email, :with => "test@test.com"
     click_on 'Reset'
     record = User.first(:email => "test@test.com")
     expect(record.updated_at).to be_a(Date)   
+  end
+
+  scenario "user has a token" do
+    user = User.first(:email => "test@test.com")
+    user.update(:password_digest => 'EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE')
+    visit '/users/reset_password/EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE'
+    expect(page).to have_content("Choose a new password")
   end
 
 end

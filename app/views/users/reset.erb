@@ -1,9 +1,23 @@
-<% if @user != nil %>
-  <h1>We have sent an email to <%= @user.email %> with more instructions</h1>
-<% else %>
+<% if !@reset && @user.nil? %>
+  
   <h1>Please give us your email</h1>
   <form method="post" action="/users/reset">
     Email: <input type="text" name='email'>
     <input type="submit" value="Reset">
   </form>
+
+<% elsif !@reset && !@user.nil? %>
+  
+  <h1>We have sent an email to <%= @user.email %> with more instructions</h1>
+
+
+<% else %>
+
+  <h1>Choose a new password</h1>
+  <form method="post" action="/users/reset_password_save">
+    <input type="hidden" value="<%= @user.id %>"
+    New Password: <input type="text" name='password'>
+    <input type="submit" value="Save">
+  </form>
+
 <% end %>
