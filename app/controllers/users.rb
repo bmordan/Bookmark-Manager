@@ -16,6 +16,16 @@ post '/users' do
   end
 end
 
+post '/users/reset' do
+  @email = params[:email]
+  @user = User.first(:email => @email)
+  token = @user.password_token
+  @user.update(:password_digest => token)
+  link = base_url+'/users/reset_password/:'+token
+  #puts link+'|'+@user.updated_at.to_s
+  erb :"users/reset"
+end
+
 get '/users/reset_password' do
   params[:token].nil? ? @reset = false : @reset = true
   erb :"users/reset"
@@ -27,12 +37,9 @@ get '/users/reset_password/:token' do
   erb :"users/reset"
 end
 
-post '/users/reset' do
-  @email = params[:email]
-  @user = User.first(:email => @email)
-  token = @user.password_token
-  @user.update(:password_digest => token)
-  link = base_url+'/users/reset_password/:'+token
-  #puts link+'|'+@user.updated_at.to_s
-  erb :"users/reset"
+post '/users/reset_password_save' do
+  user = User.get(params[:user_id])
+  password = BCrypt::Password.create(params[:password])
+  user.update(:password_digest => password)
 end
+

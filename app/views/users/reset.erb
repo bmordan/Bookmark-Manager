@@ -15,7 +15,7 @@
 
   <h1>Choose a new password</h1>
   <form method="post" action="/users/reset_password_save">
-    <input type="hidden" value="<%= @user.id %>"
+    <input type="hidden" name="user_id" value="<%= @user.id %>">
     New Password: <input type="text" name='password'>
     <input type="submit" value="Save">
   </form>
