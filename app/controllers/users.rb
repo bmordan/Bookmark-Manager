@@ -15,3 +15,14 @@ post '/users' do
     erb :"users/new"
   end
 end
+
+get '/users/reset_password' do
+  @user
+  erb :"users/reset"
+end
+
+post '/users/reset' do
+  @email = params[:email]
+  @user = User.first(:email => @email)
+  erb :"users/reset"
+end
