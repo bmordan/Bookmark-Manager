@@ -24,5 +24,9 @@ end
 post '/users/reset' do
   @email = params[:email]
   @user = User.first(:email => @email)
+  token = @user.password_token
+  @user.update(:password_digest => token)
+  link = base_url+'/users/reset_password/:'+token
+  #puts link+'|'+@user.updated_at.to_s
   erb :"users/reset"
 end

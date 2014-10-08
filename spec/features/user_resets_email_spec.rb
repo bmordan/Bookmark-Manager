@@ -17,4 +17,12 @@ feature "User resets their password" do
     }    
   end
 
+  scenario "user has a time period set for a password reset" do
+    visit '/users/reset_password'
+    fill_in :email, :with => "test@test.com"
+    click_on 'Reset'
+    record = User.first(:email => "test@test.com")
+    expect(record.updated_at).to be_a(Date)   
+  end
+
 end
