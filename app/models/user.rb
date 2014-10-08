@@ -27,4 +27,8 @@ class User
     user && BCrypt::Password.new(user.password_digest) == password ? user : nil
   end
 
+  def password_token
+    (1..64).map{('A'..'Z').to_a.sample}.join
+  end
+
 end
