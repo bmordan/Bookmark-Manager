@@ -3,6 +3,7 @@ require 'data_mapper'
 require 'rack-flash'
 require 'sinatra/partial'
 require 'time_difference'
+require 'rest-client'
 require_relative 'helpers/application'
 require_relative 'data_mapper_setup'
 

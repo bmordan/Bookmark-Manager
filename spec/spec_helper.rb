@@ -5,6 +5,7 @@ require_relative './features/session_helper'
 require 'database_cleaner'
 require 'capybara/rspec'
 require 'timecop'
+#require 'webmock/rspec'
 
 Capybara.app = Sinatra::Application.new
 

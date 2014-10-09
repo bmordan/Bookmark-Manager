@@ -24,7 +24,7 @@ feature "User resets their password" do
     fill_in :email, :with => "test@test.com"
     click_on 'Reset'
     record = User.first(:email => "test@test.com")
-    expect(record.updated_at).to be_a(Date)   
+    expect(record.updated_at).to be_a(DateTime)   
   end
 
   scenario "user has a token" do
@@ -41,6 +41,17 @@ feature "User resets their password" do
     Timecop.travel(expired)
     visit '/users/reset_password/EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE'
     expect(page).to have_content("Your token has expired")
+  end
+
+  scenario "with an email reset link" do
+
+    visit '/users/reset_password'
+    fill_in :email, :with => "test@test.com"
+    click_on 'Reset'
+    within(:css, 'h1'){
+      expect(page).to have_content("We have sent an email to test@test.com with more instructions")
+    }
+
   end
 
 end
