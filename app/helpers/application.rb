@@ -9,11 +9,10 @@ helpers do
   end
 
   def send_email(email,link)
-    RestClient.post "https://api:key-3ax6xnjp29jd6fds4gc373sgvjxteol0"\
-    "@api.mailgun.net/v2/samples.mailgun.org/messages",
-    :from => "Excited User <me@samples.mailgun.org>",
+    RestClient.post "https://api:key-7577f504028fa8de43dc70aea8bdb787@api.mailgun.net/v2/app30532338.mailgun.org/messages",
+    :from => "bookmarkmanager <bookmarks@manager.org>",
     :to => "#{email}",
-    :subject => "Hello",
+    :subject => "Reset your password",
     :text => "Reset your password #{link}"
   end
 

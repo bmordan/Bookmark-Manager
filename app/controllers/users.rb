@@ -19,8 +19,9 @@ end
 post '/users/reset' do
   @email = params[:email]
   @user = User.first(:email => @email)
+  redirect '/users/new' if @user.nil?
   token = @user.password_token
-  @user.update(:password_digest => token)
+  @user.update(:password_token => token)
   link = base_url+'/users/reset_password/:'+token
   send_email(@user.email,link)
   erb :"users/reset"
@@ -33,7 +34,7 @@ end
 
 get '/users/reset_password/:token' do
   params[:token].nil? ? @reset = false : @reset = true
-  @user = User.first(:password_digest => params[:token])
+  @user = User.first(:password_token => params[:token])
   TimeDifference.between(@user.updated_at.to_time, Time.new).in_minutes > 20 ? @expired = true : @expired = false
   erb :"users/reset"
 end
