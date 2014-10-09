@@ -6,6 +6,8 @@ feature "User resets their password" do
     User.create(:email => "test@test.com",
                 :password => 'test',
                 :password_confirmation => 'test')
+    time = Time.local(2014,10,10,10,32,45) # time at 10:32am
+    Timecop.freeze(time)
   end
 
   scenario "user can enter email and be identified" do
@@ -30,6 +32,15 @@ feature "User resets their password" do
     user.update(:password_digest => 'EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE')
     visit '/users/reset_password/EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE'
     expect(page).to have_content("Choose a new password")
+  end
+
+  scenario "user's token time limit of 20 mins has expired" do
+    user = User.first(:email => 'test@test.com')
+    user.update(:password_digest => 'EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE')
+    expired = Time.local(2014,10,10,10,58,13)
+    Timecop.travel(expired)
+    visit '/users/reset_password/EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE'
+    expect(page).to have_content("Your token has expired")
   end
 
 end

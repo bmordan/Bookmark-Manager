@@ -11,7 +11,12 @@
   <h1>We have sent an email to <%= @user.email %> with more instructions</h1>
 
 
-<% else %>
+<% elsif @expired %>
+
+  <h1>Your token has expired</h1>
+  <a href="/users/reset_password">Click here to get a new token</a>
+
+<% elsif !@expired %>
 
   <h1>Choose a new password</h1>
   <form method="post" action="/users/reset_password_save">
