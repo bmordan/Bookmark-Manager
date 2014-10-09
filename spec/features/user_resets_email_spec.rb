@@ -11,7 +11,7 @@ feature "User resets their password" do
     stub_request(:post, "https://api:key-7577f504028fa8de43dc70aea8bdb787@api.mailgun.net/v2/app30532338.mailgun.org/messages").with(:body => /.+/)
   end
 
-  scenario "user can enter email and be identified" do
+  scenario "and is notified with an email" do
     visit '/users/reset_password'
     fill_in :email, :with => "test@test.com"
     click_on 'Reset'
@@ -20,7 +20,7 @@ feature "User resets their password" do
     }    
   end
 
-  scenario "user has a time period for a password reset" do
+  scenario "in a time period" do
     visit '/users/reset_password'
     fill_in :email, :with => "test@test.com"
     click_on 'Reset'
@@ -28,22 +28,18 @@ feature "User resets their password" do
     expect(record.updated_at).to be_a(DateTime)   
   end
 
-  scenario "with an email reset link" do
+  scenario "error is raised if app can't find the user" do
+    expect(lambda {visit '/users/reset_password/EIO_WRONG_HASH_LQMQE'} ).to raise_error(RuntimeError)
+  end  
 
-    visit '/users/reset_password'
-    fill_in :email, :with => "test@test.com"
-    click_on 'Reset'
-
-  end
-
-  scenario "user has a token" do
+  scenario "with a token" do
     user = User.first(:email => "test@test.com")
     user.update(:password_token => 'EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE')
     visit '/users/reset_password/EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE'
     expect(page).to have_content("Choose a new password")
   end
 
-  scenario "user's token time limit of 20 mins has expired" do
+  scenario "in a time limit of 20 mins" do
     user = User.first(:email => 'test@test.com')
     user.update(:password_token => 'EIOWVPUNPMEFOLQDFYXKWYCXPTCOBYLMAAJFYJULHSKZUBPYNMMDSAACRVXLQMQE')
     expired = Time.local(2014,10,10,10,58,13)

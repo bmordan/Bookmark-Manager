@@ -6,4 +6,5 @@ describe User do
   it "should generate a password token for a password reset" do
     expect(user.password_token).to be_a(String)
   end
+
 end
