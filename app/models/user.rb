@@ -31,7 +31,7 @@ class User
   end
 
   def password_token
-    (1..64).map{('A'..'Z').to_a.sample}.join
+    (1..32).map{('A'..'Z').to_a.sample}.join
   end
 
 end

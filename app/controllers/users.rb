@@ -34,7 +34,8 @@ end
 
 get '/users/reset_password/:token' do
   params[:token].nil? ? @reset = false : @reset = true
-  @user = User.first(:password_token => params[:token])
+  puts params[:token]
+  @user = User.first(:password_token => params[:token].slice(1..params[:token].length))
   raise "Sorry we cant find that user, try again" if @user.nil?
   TimeDifference.between(@user.updated_at.to_time, Time.new).in_minutes > 20 ? @expired = true : @expired = false
   erb :"users/reset"
